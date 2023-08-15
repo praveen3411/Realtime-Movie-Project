@@ -14,23 +14,28 @@ import Page404 from "./pages/404/Page404";
 function App() {
   const { url } = useSelector((state) => state.home);
   const dispatch = useDispatch();
-  let appTesting = () => {
-    let fetchHere = fetchDataFromApi("/movie/popular");
+  let fetchApiConfig = () => {
+    let fetchHere = fetchDataFromApi("/configuration");
     fetchHere
       .then((res) => {
         console.log(res);
-        dispatch(getApiConfiguration(res));
+        const url = {
+          backdrop: res.images.secure_base_url + "original",
+          poster: res.images.secure_base_url + "original",
+          profile: res.images.secure_base_url + "original",
+        };
+        dispatch(getApiConfiguration(url));
       })
       .catch((error) => {
         console.log(error);
       });
   };
   useEffect(() => {
-    appTesting();
+    fetchApiConfig();
   }, []);
   return (
     <BrowserRouter>
-      {/* <Header /> */}
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:mediaType/:id" element={<Details />} />
