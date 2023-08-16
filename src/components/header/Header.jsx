@@ -39,10 +39,34 @@ const Header = () => {
     }
     setMobileMenu(false);
   };
+
+  const controlNavbar = () => {
+    if (window.scrollY > 200) {
+      if (window.scrollY > lastScrollY && !mobileMenu) {
+        setShow("hide");
+      } else {
+        setShow("show");
+      }
+    } else {
+      setShow("top");
+    }
+    setLastScrollY(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", controlNavbar);
+    return () => {
+      window.removeEventListener("scroll", controlNavbar);
+    };
+  }, [lastScrollY]);
+
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[location])
   return (
     <header className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}>
       <ContentWrapper>
-        <div className="log">
+        <div className="logo">
           <img src={logo} alt="logo" />
         </div>
         <ul className="menuItems">
